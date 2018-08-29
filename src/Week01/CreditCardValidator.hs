@@ -6,22 +6,40 @@ module Week01.CreditCardValidator
   , validate
   ) where
 
+import Data.Bool (bool)
+import Data.List (unfoldr)
+import Data.Tuple (swap)
+
 toDigits :: Integer -> [Integer]
-toDigits =
-  error "Week01.CreditCardValidator#toDigits not implemented"
+toDigits = reverse . toDigitsRev
+
+-- toDigits n
+--   | n <= 0 = []
+--   | otherwise = toDigits (div n 10) ++ [mod n 10]
 
 toDigitsRev :: Integer -> [Integer]
 toDigitsRev =
-  error "Week01.CreditCardValidator#toDigitsRev not implemented"
+  unfoldr $ \n ->
+    if n <= 0
+      then Nothing
+      else Just (swap (divMod n 10))
+
+-- unfoldr $ bool Nothing . (Just . swap . flip divMod 10) <*> (> 0)
 
 doubleEveryOther :: [Integer] -> [Integer]
 doubleEveryOther =
-  error "Week01.CreditCardValidator#doubleEveryOther not implemented"
+  reverse . zipWith (*) (cycle [1, 2]) . reverse
+
+-- doubleEveryOther =
+--   reverse . go . reverse
+--     where
+--       go [] = []
+--       go [a] = [a]
+--       go (a : b : cs) = a : (b * 2) : go cs
 
 sumDigits :: [Integer] -> Integer
-sumDigits =
-  error "Week01.CreditCardValidator#sumDigits not implemented"
+sumDigits = sum . (toDigits =<<)
 
 validate :: Integer -> Bool
 validate =
-  error "Week01.CreditCardValidator#validate not implemented"
+  (0 ==) . (`rem` 10) . sumDigits . doubleEveryOther . toDigits
