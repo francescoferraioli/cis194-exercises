@@ -14,8 +14,8 @@ newtype Score = Score { getScore :: Int }
   deriving (Show, Eq, Ord, Num)
 
 instance Monoid Score where
-  mempty = error "Week07.Scrabble#mempty not implemented for Monoid Score"
-  mappend = error "Week07.Scrabble#mappend not implemented for Monoid Score"
+  mempty = 0
+  mappend = (+)
 
 score :: Char -> Score
 score c = case toLower c of
@@ -48,4 +48,4 @@ score c = case toLower c of
   _ -> mempty
 
 scoreString :: String -> Score
-scoreString = error "Week07.Scrabble#scoreString not implemented"
+scoreString = foldMap score
