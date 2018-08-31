@@ -13,6 +13,9 @@ import Data.Char (toLower)
 newtype Score = Score { getScore :: Int }
   deriving (Show, Eq, Ord, Num)
 
+instance Semigroup Score where
+  (<>) a b = Score (getScore a + getScore b)
+
 instance Monoid Score where
   mempty = error "Week07.Scrabble#mempty not implemented for Monoid Score"
   mappend = error "Week07.Scrabble#mappend not implemented for Monoid Score"
