@@ -2,7 +2,7 @@
 
 module Week07.Sized where
 
-import Data.Monoid
+import Data.Monoid (Monoid(..))
 
 newtype Size =
   Size Int
