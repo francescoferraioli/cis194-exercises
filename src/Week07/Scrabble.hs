@@ -7,6 +7,7 @@ module Week07.Scrabble
   ) where
 
 import Data.Char (toLower)
+import Data.Monoid ((<>))
 
 --------------------------- Exercise 3
 
@@ -14,8 +15,8 @@ newtype Score = Score { getScore :: Int }
   deriving (Show, Eq, Ord, Num)
 
 instance Monoid Score where
-  mempty = error "Week07.Scrabble#mempty not implemented for Monoid Score"
-  mappend = error "Week07.Scrabble#mappend not implemented for Monoid Score"
+  mempty = Score 0
+  mappend a b = Score (getScore a + getScore b)
 
 score :: Char -> Score
 score c = case toLower c of
@@ -48,4 +49,4 @@ score c = case toLower c of
   _ -> mempty
 
 scoreString :: String -> Score
-scoreString = error "Week07.Scrabble#scoreString not implemented"
+scoreString = foldr ((<>) . score) mempty
