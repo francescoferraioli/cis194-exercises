@@ -52,7 +52,7 @@ testCompany2 =
 
 -- A type to store a list of guests and their total fun score.
 data GuestList =
-  GL [Employee] Fun
+  GL { glGuests :: [Employee], glFun :: Fun }
   deriving (Show, Eq)
 
 instance Ord GuestList where
@@ -60,7 +60,7 @@ instance Ord GuestList where
 
 instance Monoid GuestList where
   mempty :: GuestList
-  mempty = error "Week08.Party#Monoid(GuestList)#mempty not implemented"
+  mempty = GL [] 0
 
   mappend :: GuestList -> GuestList -> GuestList
-  mappend = error "Week08.Party#Monoid(GuestList)#mappend not implemented"
+  mappend (GL guests fun) (GL guests' fun') = GL (guests ++ guests') (fun + fun')
