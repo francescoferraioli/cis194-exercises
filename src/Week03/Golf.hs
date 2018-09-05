@@ -5,10 +5,19 @@ module Week03.Golf
   ) where
 
 skips :: [a] -> [[a]]
-skips = error "Week03.Golf#skips not implemented"
+skips xs = map (`everyNth` xs) [1..(length xs)]
+
+everyNth :: Int -> [a] -> [a]
+everyNth n xs = map fst (filter (indexMod n) (zip xs [1..]))
+
+indexMod :: Int -> (a, Int) -> Bool
+indexMod num (_, i) = i `mod` num == 0
 
 localMaxima :: [Integer] -> [Integer]
-localMaxima = error "Week03.Golf#localMaxima not implemented"
+localMaxima = map (snd . fst) . filter isLocalMaxima . getThreeTuple
+  where
+    getThreeTuple arr = zip (zip arr (drop 1 arr)) (drop 2 arr)
+    isLocalMaxima ((a, b), c)  = b > a && b > c
 
 histogram :: [Integer] -> String
 histogram = error "Week03.Golf#histogram not implemented"
