@@ -23,7 +23,7 @@ fun1 (x:xs)
   | otherwise = fun1 xs
 
 fun1' :: [Integer] -> Integer
-fun1' = error "Week04.Soln#fun2' not implemented"
+fun1' = product . map (\x -> x - 2) . filter even
 
 fun2 :: Integer -> Integer
 fun2 1 = 0
@@ -32,14 +32,31 @@ fun2 n
   | otherwise = fun2 (3 * n + 1)
 
 fun2' :: Integer -> Integer
-fun2' = error "Week04.Soln#fun2' not implemented"
+fun2' = error "Week04.Soln#foldTree not implemented"
+
+
 
 ---------------------------  Exercise 2
 
 data Tree a = Leaf | Node Integer (Tree a) a (Tree a) deriving (Show, Eq)
 
 foldTree :: [a] -> Tree a
-foldTree = error "Week04.Soln#foldTree not implemented"
+foldTree = foldr buildTree Leaf
+
+buildTree :: a -> Tree a -> Tree a
+buildTree x Leaf = Node 0 Leaf x Leaf
+buildTree x (Node _ l y r) 
+ | getHeight l < getHeight r = node y (buildTree x l) r
+ | otherwise = node y (buildTree x r) l
+
+node :: a -> Tree a -> Tree a -> Tree a
+node y a b
+  | getHeight a < getHeight b = Node (getHeight b + 1) b y a 
+  | otherwise = Node (getHeight a + 1) a y b 
+
+getHeight :: Tree a -> Integer
+getHeight Leaf = -1
+getHeight (Node h _ _ _) = h
 
 showTree :: Show a => Tree a -> String
 showTree Leaf = ""
@@ -57,11 +74,11 @@ printTree t = putStrLn $ showTree t
 ---------------------------  Exercise 3
 
 xor :: [Bool] -> Bool
-xor = error "Week04.Soln#xor not implemented"
+xor x = foldr (\_ b -> not b) False (filter (==True) x)
 
 -- impl using foldr
 map' :: (a -> b) -> [a] -> [b]
-map' = error "Week04.Soln#map' not implemented"
+map' f = foldr (\ a b -> f a : b) []
 
 -- impl using foldr
 myFoldl :: (a -> b -> a) -> a -> [b] -> a
