@@ -42,10 +42,14 @@ joinListToList (Append _ l r) = joinListToList l ++ joinListToList r
 -- Suggestion (no tests):
 -- Pulls the monoidal value out of the root of the JoinList
 tag :: Monoid m => JoinList m a -> m
-tag = error "Week07.JoinList#tag not implemented"
+tag Empty = mempty
+tag (Single m _) = m
+tag (Append m _ _) = m
 
 (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
-(+++) = error "Week07.JoinList#(+++) not implemented"
+(+++) Empty a = a
+(+++) a Empty = a
+(+++) a b = Append (tag a <> tag b) a b
 
 --------------------------- Exercise 2
 
